@@ -40,16 +40,11 @@
 
 ## 字符串
 
-CSS中不要求字符串必须引号包裹，甚至是字符串中包含空格的。就拿font-family属性来说：无论你是否使用引号包裹，CSS解析器都可以正确解析。
+CSS中不要求字符串必须用引号包裹，甚至是字符串中包含空格的。就拿font-family属性来说：无论你是否使用引号包裹，CSS解析器都可以正确解析。
 
-因此，Sass*也*不强制要求字符串必须被引号包裹。更棒的是（你也会如此认为），被引号包裹和没被包裹的一对字符串完全等同（例如，`'abc'` 严格等同于 `abc`）。
+因此，Sass*也不*强制要求字符串必须被引号包裹。更棒的是（你也会如此认为），被引号包裹和没被包裹的一对字符串完全等同（例如，`'abc'` 严格等同于 `abc`）。
 
 话虽如此，不强制要求字符串被引号包裹的毕竟是少数，所以，在Sass中**字符串应该始终被单引号所包裹**（在*querty*键盘中单引号比双引号更容易输入）。即使不考虑与其他语言的一致性，单是考虑CSS的近亲JavaScript，也有数条理由这么做：
-
-* color names are treated as colors when unquoted, which can lead to serious issues;
-* most syntax highlighters will choke on unquoted strings;
-* it helps general readability;
-* there is no valid reason not to quote strings.
 
 * 如果颜色名不被引号包裹，将会被解析为颜色值，显然这会导致严重问题；
 * 大多数的语法高亮机制将会因未被引号包裹的字符串而罢工；
@@ -228,7 +223,7 @@ $value: $length / 1px
 $value: str-slice($length + unquote(''), 1, 2)
 ```
 
-给一个数值像以字符串形式添加单位的结果是产生一个字符串，同时要防止对数据的额外操作。从一个带有单位的数值中分离数字部分也会产生字符串，但些都不是你想要的。
+给一个数值以字符串形式添加单位的结果是产生一个字符串，同时要防止对数据的额外操作。从一个带有单位的数值中分离数字部分也会产生字符串，但这些都不是你想要的。
 
 ### 计算
 
@@ -286,7 +281,7 @@ $value: str-slice($length + unquote(''), 1, 2)
 
 ## 颜色
 
-颜色在CSS中占有重要地位。当涉及到操纵色彩时，Sass通过提供少数[powerful functions](http://sass-lang.com/documentation/Sass/Script/Functions.html)最终成为了极具价值的助手。
+颜色在CSS中占有重要地位。当涉及到操纵色彩时，Sass通过提供少数的[powerful functions](http://sass-lang.com/documentation/Sass/Script/Functions.html)，最终成为了极具价值的助手。
 
 ### 颜色格式
 
@@ -297,7 +292,7 @@ $value: str-slice($length + unquote(''), 1, 2)
 3. [RGB值](http://en.wikipedia.org/wiki/RGB_color_model);
 4. 十六进制。小写并尽可能简写。
 
-对于初学者来说，颜色关键字往往比较通俗易懂。HSL表示方式不仅仅是人类大脑最易于接受的<sup>[citation needed]</sup>，它也可以让样式表作者轻松地调整色调、饱和度和亮度来修改颜色。如果一个颜色偏蓝、偏绿或者偏红，那么使用RGB更容易表示出来，但是却不容易表示三者的混合色。最后，十六进制是人类的大脑理解的极限了。
+对于初学者来说，颜色关键字往往比较通俗易懂。HSL表示方式不仅仅是人类大脑最易于接受的<sup>[citation needed]</sup>，它也可以让样式表作者轻松地调整色调、饱和度和亮度来修改颜色。如果一个颜色偏蓝、偏绿或者偏红，那么使用RGB更容易表示出来，但是却不容易表示三者的混合色。最后，十六进制是人类大脑理解的极限了。
 
 ```
 // 推荐方式
@@ -347,7 +342,7 @@ $value: str-slice($length + unquote(''), 1, 2)
 
 ### 颜色和变量
 
-当一个颜色被多次调用时，用一个有意义的变量名来保存它。
+当一个颜色被多次调用时，最好用一个有意义的变量名来保存它。
 
 ```
 $sass-pink: #c69;
@@ -360,7 +355,11 @@ $sass-pink: #c69
 $main-theme-color: $sass-pink;
 $main-theme-color: $sass-pink
 ```
+<<<<<<< HEAD
 这样做可以防止一个主题变化而出现此类结果 `$sass-pink: blue`。
+=======
+这样做可以防止一个主题变化时出现此类结果 `$sass-pink: blue`。
+>>>>>>> d1273b11366a38c6836c4bb0359e065e755a0794
 
 {% include donate.html %}
 
@@ -368,9 +367,9 @@ $main-theme-color: $sass-pink
 
 [`lighten`](http://sass-lang.com/documentation/Sass/Script/Functions.html#lighten-instance_method)和 [`darken`](http://sass-lang.com/documentation/Sass/Script/Functions.html#darken-instance_method) 函数都是通过增加或者减小HSL中颜色的亮度来实现调节的。基本上，它们就是[`adjust-color`](http://sass-lang.com/documentation/Sass/Script/Functions.html#adjust_color-instance_method)函数添加了 `$lightness`参数的别名。
 
-问题是，这些函数经常并不能实现预期的结果。另一方方面，通过混合`白色` 或 `黑色`实现变量或变暗的 [`mix`](http://sass-lang.com/documentation/Sass/Script/Functions.html#mix-instance_method)函数，是一个不错的方法。
+问题是，这些函数经常并不能实现预期的结果。另一方面，通过混合`白色` 或 `黑色`实现变量或变暗的 [`mix`](http://sass-lang.com/documentation/Sass/Script/Functions.html#mix-instance_method)函数，是一个不错的方法。
 
-和上述两个函数相比，使用`mix`的好处是，当你降低颜色的比例时，它会渐进的接近黑色（或者白色），而 `darken` 和`lighten`立即变换颜色到黑色或白色。 
+和上述两个函数相比，使用`mix`的好处是，当你降低颜色的比例时，它会渐进的接近黑色（或者白色），而 `darken` 和`lighten`立即变换颜色到黑色或白色。
 
 <figure>
   <img src="/assets/images/lighten-darken-mix.png" alt="Illustration of the difference between lighten/darken and mix Sass functions" />
@@ -414,10 +413,8 @@ $main-theme-color: $sass-pink
   @return mix($color, black, $percentage)
 ```
 <div class="note">
-  <p>The <a href="http://sass-lang.com/documentation/Sass/Script/Functions.html#scale_color-instance_method"><code>scale-color</code></a> function is designed to scale properties more fluidly by taking into account how high or low they already are. It should provide results that are as nice as <code>mix</code>'s but with a clearer calling convention. The scaling factor isn't exactly the same though.</p>
+  <p><a href="http://sass-lang.com/documentation/Sass/Script/Functions.html#scale_color-instance_method"><code>scale-color</code></a> 函数的设计初衷是为了更流畅地调试属性——以实际的高低为调试基础。它如同<code>mix</code>'s一样好用，并且提供了更清晰地调用约定。比例因子并不完全相同。</p>
 </div>
-
-
 
 ### 扩展阅读
 
@@ -498,11 +495,11 @@ $shadows: $shadows, $shadow
 
 * [SassyLists](http://sassylists.com)
 
-## 图
+## Maps
 
-从Sass3.3开始，样式表作者可以使用图这种数据结构，Sass团队为图关联了数组、哈希表甚至是Javascript对象。图是一种映射任何类型键值对（可以是任何类型，包括内嵌图，不过不推荐这种内嵌方式）的数据结构。
+从Sass3.3开始，样式表作者可以使用map这种数据结构——Sass团队使map可以映射关联数组、哈希表甚至是Javascript对象。map是一种映射任何类型键值对（可以是任何类型，包括内嵌图，不过不推荐这种内嵌方式）的数据结构。
 
-图的使用应该遵循下述规范：
+map的使用应该遵循下述规范：
 
 * 冒号(`:`)之后添加空格；
 * 左开括号(`(`)要和冒号 (`:`)写在同一行；
@@ -576,7 +573,7 @@ $breakpoints: (
           #{'(' + type-of($value) + ') ' + $key}: inspect($value)
 ```
 
-如果你想深入了解图的实现机制，可以添加下述函数。该混合宏可以自动显示图的运行机制。
+如果你想深入了解map的实现机制，可以添加下述函数。该混合宏可以自动显示map的运行机制。
 
 ```
 /// Compute the maximum depth of a map
@@ -620,7 +617,7 @@ $breakpoints: (
 
 ## CSS 规则集
 
-在这里，极有可能颠覆每个人对书写CSS规则集的认知（根据众多规范整理而成，包括CSS Guidelines](http://cssguidelin.es/#anatomy-of-a-ruleset)）：
+在这里，极有可能颠覆每个人对书写CSS规则集的认知（根据众多规范整理而成，包括[CSS Guidelines](http://cssguidelin.es/#anatomy-of-a-ruleset)）：
 
 * 相关联的选择器写在同一行；不相关联选择器分行书写；
 * 最后一个选择器和左开大括号(`{`)中间书写一个空格；
@@ -713,14 +710,12 @@ $breakpoints: (
 
 ## 声明顺序
 
-I cannot think of many topics where opinions are as divided as they are regarding declaration sorting in CSS. Concretely, there are two factions here:
-
 难以想象竟有这么多关于划分CSS声明顺序的讨论。具体而言，有如下两派：
 
 * 坚持以字母顺序排列；
 * 以类型（position, display, colors, font, miscellaneous...）顺序排列；
 
-这两种方式各有利弊。一方面，字母排序方式通俗易懂（至少对于语言中使用拉丁字母的），所以排序的过程完全没有争议。但是，这种排序的结果却十分奇怪，如`bottom` 和 `top`竟然彼此不相邻。为什么animations属性出现在display属性之前？字母排序方式有太多诸如此来的怪相了。
+这两种方式各有利弊。一方面，字母排序方式通俗易懂（至少对于语言中使用拉丁字母的人来说），所以排序的过程完全没有争议。但是，这种排序的结果却十分奇怪，如`bottom` 和 `top`竟然彼此不相邻。为什么animations属性出现在display属性之前？字母排序方式有太多诸如此类的怪相了。
 
 ```
 .foo {
@@ -748,7 +743,7 @@ I cannot think of many topics where opinions are as divided as they are regardin
   width: 100px
 ```
 
-另一方面，按照类型排序则让属性显得更具有意义。每个和字体相关的属性被声明在一起，`top` 和 `bottom`也结合在一起，最终审阅CSS规则集感觉就像是在读故事。除非你坚持诸如 [Idiomatic CSS](https://github.com/necolas/idiomatic-css)的规定，类型声明顺序可以有更丰富充实的表现。`white-space`应该放在哪里：font还是dispaly? `overflow`应该归属何处？如何进行组内排序（如果是字母排序，这岂不成了个笑话）？
+另一方面，按照类型排序则让属性显得更具有意义。每个和字体相关的属性被声明在一起，`top` 和 `bottom`也结合在一起，最终审阅CSS规则集感觉就像是在读故事。除非你坚持诸如 [Idiomatic CSS](https://github.com/necolas/idiomatic-css)的规定，不然类型声明顺序可以有更丰富充实的表现。`white-space`应该放在哪里：font还是dispaly? `overflow`应该归属何处？如何进行组内排序（如果是字母排序，这岂不成了个笑话）？
 
 ```
 .foo {
@@ -803,7 +798,7 @@ I cannot think of many topics where opinions are as divided as they are regardin
   font-size: 1.5em
 ```
 
-我必须说我不能对此下任何判定。一份[recent poll on CSS-Tricks](http://css-tricks.com/poll-results-how-do-you-order-your-css-properties/)确认，超过45%的开发者使用类型顺序声明，而只有14%使用字母顺序。此外还有39%的开发者随意而为，这其中就包括我。 
+我必须说我不能对此下任何判定。一份[recent poll on CSS-Tricks](http://css-tricks.com/poll-results-how-do-you-order-your-css-properties/)确认，超过45%的开发者使用类型顺序声明，而只有14%使用字母顺序。此外还有39%的开发者随意而为，这其中就包括我。
 
 <figure>
   <img src="/assets/images/css_order_chart.png" alt="" />
