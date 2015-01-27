@@ -11,59 +11,47 @@
 * 正确书写多行CSS规则；
 * 有意义的使用空格。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 // 推荐方式
 .foo {
   display: block;
   overflow: hidden;
   padding: 0 1em;
 }
-
+```
+```
 // 不推荐方式
 .foo {
     display: block; overflow: hidden;
 
     padding: 0 1em;
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
+```
+```
 // Since Sass indented-syntax forces those coding standards
 // There is no wrong way of proceeding
 .foo
   display: block
   overflow: hidden
   padding: 0 1em
-{% endhighlight %}
-  </div>
-</div>
+```
 
 在本部分中不会涉及有关文件组织的问题，相关讨论在[另一节](#architecture)中。
 
 ## 字符串
 
-CSS中不要求字符串必须引号包裹，甚至是字符串中包含空格的。就拿font-family属性来说：无论你是否使用引号包裹，CSS解析器都可以正确解析。
+CSS中不要求字符串必须用引号包裹，甚至是字符串中包含空格的。就拿font-family属性来说：无论你是否使用引号包裹，CSS解析器都可以正确解析。
 
-因此，Sass*也*不强制要求字符串必须被引号包裹。更棒的是（你也会如此认为），被引号包裹和没被包裹的一对字符串完全等同（例如，`'abc'` 严格等同于 `abc`）。
+因此，Sass*也不*强制要求字符串必须被引号包裹。更棒的是（你也会如此认为），被引号包裹和没被包裹的一对字符串完全等同（例如，`'abc'` 严格等同于 `abc`）。
 
 话虽如此，不强制要求字符串被引号包裹的毕竟是少数，所以，在Sass中**字符串应该始终被单引号所包裹**（在*querty*键盘中单引号比双引号更容易输入）。即使不考虑与其他语言的一致性，单是考虑CSS的近亲JavaScript，也有数条理由这么做：
-
-* color names are treated as colors when unquoted, which can lead to serious issues;
-* most syntax highlighters will choke on unquoted strings;
-* it helps general readability;
-* there is no valid reason not to quote strings.
 
 * 如果颜色名不被引号包裹，将会被解析为颜色值，显然这会导致严重问题；
 * 大多数的语法高亮机制将会因未被引号包裹的字符串而罢工；
 * 提高可读性；
 * 没有正当理由不去用引号包裹字符串。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 // 推荐方式
 $font-stack: 'Helvetica Neue Light', 'Helvetica', 'Arial', sans-serif;
 
@@ -72,10 +60,8 @@ $font-stack: "Helvetica Neue Light", "Helvetica", "Arial", sans-serif;
 
 // 不推荐方式
 $font-stack: Helvetica Neue Light, Helvetica, Arial, sans-serif;
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
+```
+```
 // 推荐方式
 $font-stack: 'Helvetica Neue Light', 'Helvetica', 'Arial', sans-serif
 
@@ -84,9 +70,7 @@ $font-stack: "Helvetica Neue Light", "Helvetica", "Arial", sans-serif
 
 // 不推荐方式
 $font-stack: Helvetica Neue Light, Helvetica, Arial, sans-serif
-{% endhighlight %}
-  </div>
-</div>
+```
 
 <div class="note">
   <p>In the previous example, <code>sans-serif</code> is not being quoted because it is a specific CSS value that needs to be unquoted.</p>
@@ -94,22 +78,19 @@ $font-stack: Helvetica Neue Light, Helvetica, Arial, sans-serif
 
 URLs should be quoted as well, for the same reasons as above:
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 // 推荐方式
 .foo {
   background-image: url('/images/kittens.jpg');
 }
-
+```
+```
 // 不推荐方式
 .foo {
   background-image: url(/images/kittens.jpg);
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
+```
+```
 // 推荐方式
 .foo
   background-image: url('/images/kittens.jpg')
@@ -117,9 +98,7 @@ URLs should be quoted as well, for the same reasons as above:
 // 不推荐方式
 .foo
   background-image: url(/images/kittens.jpg)
-{% endhighlight %}
-  </div>
-</div>
+```
 
 ### 扩展阅读
 
@@ -134,9 +113,7 @@ URLs should be quoted as well, for the same reasons as above:
 
 当数字小于1时，应该在小数点前写出0.永远不要显示小数尾部的0。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 // 推荐方式
 .foo {
   padding: 2em;
@@ -148,10 +125,8 @@ URLs should be quoted as well, for the same reasons as above:
   padding: 2.0em;
   opacity: .5;
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
+```
+```
 // 推荐方式
 .foo
   padding: 2em
@@ -161,42 +136,32 @@ URLs should be quoted as well, for the same reasons as above:
 .foo
   padding: 2.0em
   opacity: .5
-{% endhighlight %}
-  </div>
-</div>
+```
 
 ### 单位
 
 当定义长度时，`0` 后面不需要加单位。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 // 推荐方式
 $length: 0;
 
 // 不推荐方式
 $length: 0em;
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
+```
+```
 // 推荐方式
 $length: 0
 
 // 不推荐方式
 $length: 0em
-{% endhighlight %}
-  </div>
-</div>
+```
 
 在Sass中最常见的错误，是简单地认为单位只是字符串，认为它会被安全的添加到数字后面。这虽然听起来不错，但却不是单位正确的解析方式。可以把单位认为是代数符号，例如，在现实世界中，5英寸乘以5英寸得到25英寸。Sass也适用这样的逻辑。
 
 将一个单位添加给数字的时候，实际上是让该数值乘以*1个单位*。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 $value: 42;
 
 // 推荐方式
@@ -204,26 +169,19 @@ $length: $value * 1px;
 
 // 不推荐方式
 $length: $value + px;
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 $value: 42
-
+```
+```
 // 推荐方式
 $length: $value * 1px
 
 // 不推荐方式
 $length: $value + px
-{% endhighlight %}
-  </div>
-</div>
+```
 
 需要注意的是加上一个*0unit*也可以正确解析，但是这种方式在某种程度上会造成一些混乱，所以我更愿意推荐上面的方式。事实上，将一个数字转换为其他兼容单位时，加0操作并不会造成错误。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 $value: 42 + 0px;
 // -> 42px
 
@@ -232,10 +190,7 @@ $value: 1in + 0px;
 
 $value: 0px + 1in;
 // -> 96px
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
+
 $value: 42 + 0px
 // -> 42px
 
@@ -244,17 +199,13 @@ $value: 1in + 0px
 
 $value: 0px + 1in
 // -> 96px
-{% endhighlight %}
-  </div>
-</div>
+```
 
 这一切最终取决于你想要达到怎样的效果。只要记住，像添加一个字符串一样添加一个单位并不是一种好的处理方式。
 
 要删除一个值的单位，你需要除以*相同类型的1单位*。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 $length: 42px;
 
 // 推荐方式
@@ -262,10 +213,7 @@ $value: $length / 1px;
 
 // 不推荐方式
 $value: str-slice($length + unquote(''), 1, 2);
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
+
 $length: 42px
 
 // 推荐方式
@@ -273,19 +221,15 @@ $value: $length / 1px
 
 // 不推荐方式
 $value: str-slice($length + unquote(''), 1, 2)
-{% endhighlight %}
-  </div>
-</div>
+```
 
-给一个数值像以字符串形式添加单位的结果是产生一个字符串，同时要防止对数据的额外操作。从一个带有单位的数值中分离数字部分也会产生字符串，但些都不是你想要的。
+给一个数值以字符串形式添加单位的结果是产生一个字符串，同时要防止对数据的额外操作。从一个带有单位的数值中分离数字部分也会产生字符串，但这些都不是你想要的。
 
 ### 计算
 
 **最高级运算应该始终被包裹在括号中**。这么不做不仅是为了提高可读性，也是为了防止一些Sass强制要求对括号内内容计算的极端情况。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 // 推荐方式
 .foo {
   width: (100% / 3);
@@ -295,10 +239,7 @@ $value: str-slice($length + unquote(''), 1, 2)
 .foo {
   width: 100% / 3;
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
+
 // 推荐方式
 .foo
   width: (100% / 3)
@@ -306,9 +247,7 @@ $value: str-slice($length + unquote(''), 1, 2)
 // 不推荐方式
 .foo
   width: 100% / 3
-{% endhighlight %}
-  </div>
-</div>
+```
 
 ### 幻数
 
@@ -316,9 +255,7 @@ $value: str-slice($length + unquote(''), 1, 2)
 
 相信不用多说你也会理解，**幻数是一场瘟疫，应不惜一切代价以避免**。当你对数值的解析方式无法找到一个合理解释时，你可以对此提交一个内容宽泛的评论，包括你是怎样遇见这个问题以及你认为它应该怎样工作。承认自己不清楚一些机制的解析方式，远比让以后的开发者从零开始弄清它们更有帮助。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 /**
  * 1. Magic number. This value is the lowest I could find to align the top of
  * `.foo` with its parent. Ideally, we should fix it properly.
@@ -326,19 +263,14 @@ $value: str-slice($length + unquote(''), 1, 2)
 .foo {
   top: 0.327em; /* 1 */
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
+
 /**
  * 1. Magic number. This value is the lowest I could find to align the top of
  * `.foo` with its parent. Ideally, we should fix it properly.
  */
 .foo
   top: 0.327em /* 1 */
-{% endhighlight %}
-  </div>
-</div>
+```
 
 ### 扩展阅读
 
@@ -349,7 +281,7 @@ $value: str-slice($length + unquote(''), 1, 2)
 
 ## 颜色
 
-颜色在CSS中占有重要地位。当涉及到操纵色彩时，Sass通过提供少数[powerful functions](http://sass-lang.com/documentation/Sass/Script/Functions.html)最终成为了极具价值的助手。
+颜色在CSS中占有重要地位。当涉及到操纵色彩时，Sass通过提供少数的[powerful functions](http://sass-lang.com/documentation/Sass/Script/Functions.html)，最终成为了极具价值的助手。
 
 ### 颜色格式
 
@@ -360,11 +292,9 @@ $value: str-slice($length + unquote(''), 1, 2)
 3. [RGB值](http://en.wikipedia.org/wiki/RGB_color_model);
 4. 十六进制。小写并尽可能简写。
 
-对于初学者来说，颜色关键字往往比较通俗易懂。HSL表示方式不仅仅是人类大脑最易于接受的<sup>[citation needed]</sup>，它也可以让样式表作者轻松地调整色调、饱和度和亮度来修改颜色。如果一个颜色偏蓝、偏绿或者偏红，那么使用RGB更容易表示出来，但是却不容易表示三者的混合色。最后，十六进制是人类的大脑理解的极限了。
+对于初学者来说，颜色关键字往往比较通俗易懂。HSL表示方式不仅仅是人类大脑最易于接受的<sup>[citation needed]</sup>，它也可以让样式表作者轻松地调整色调、饱和度和亮度来修改颜色。如果一个颜色偏蓝、偏绿或者偏红，那么使用RGB更容易表示出来，但是却不容易表示三者的混合色。最后，十六进制是人类大脑理解的极限了。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 // 推荐方式
 .foo {
   color: red;
@@ -374,10 +304,7 @@ $value: str-slice($length + unquote(''), 1, 2)
 .foo {
   color: #FF0000;
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
+
 // 推荐方式
 .foo
   color: red
@@ -385,15 +312,11 @@ $value: str-slice($length + unquote(''), 1, 2)
 // 不推荐方式
 .foo
   color: #FF0000
-{% endhighlight %}
-  </div>
-</div>
+```
 
 使用HSL值或者RGB值，通常在逗号 (`,`)后面追加一个空格，而不在前后括号 (`(`, `)`) 和值之间添加空格。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 // 推荐方式
 .foo {
   color: rgba(0, 0, 0, 0.1);
@@ -405,10 +328,7 @@ $value: str-slice($length + unquote(''), 1, 2)
   color: rgba(0,0,0,0.1);
   background: hsl( 300, 100%, 100% );
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
+
 // 推荐方式
 .foo
   color: rgba(0, 0, 0, 0.1)
@@ -418,43 +338,24 @@ $value: str-slice($length + unquote(''), 1, 2)
 .foo
   color: rgba(0,0,0,0.1)
   background: hsl( 300, 100%, 100% )
-{% endhighlight %}
-  </div>
-</div>
+```
 
 ### 颜色和变量
 
-当一个颜色被多次调用时，用一个有意义的变量名来保存它。
+当一个颜色被多次调用时，最好用一个有意义的变量名来保存它。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 $sass-pink: #c69;
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 $sass-pink: #c69
-{% endhighlight %}
-  </div>
-</div>
+```
 
 现在，你就可以在任何需要的地方随意使用这个变量了。不过，如果你是在一个主题中使用，我不建议固定的使用这个变量。相反，可以使用另一个标示使用方式的变量来保存它。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 $main-theme-color: $sass-pink;
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 $main-theme-color: $sass-pink
-{% endhighlight %}
-  </div>
-</div>
-
-这样做可以防止一个主题变化而出现此类结果 `$sass-pink: blue`。
+```
+这样做可以防止一个主题变化时出现此类结果 `$sass-pink: blue`。
 
 {% include donate.html %}
 
@@ -462,9 +363,9 @@ $main-theme-color: $sass-pink
 
 [`lighten`](http://sass-lang.com/documentation/Sass/Script/Functions.html#lighten-instance_method)和 [`darken`](http://sass-lang.com/documentation/Sass/Script/Functions.html#darken-instance_method) 函数都是通过增加或者减小HSL中颜色的亮度来实现调节的。基本上，它们就是[`adjust-color`](http://sass-lang.com/documentation/Sass/Script/Functions.html#adjust_color-instance_method)函数添加了 `$lightness`参数的别名。
 
-问题是，这些函数经常并不能实现预期的结果。另一方方面，通过混合`白色` 或 `黑色`实现变量或变暗的 [`mix`](http://sass-lang.com/documentation/Sass/Script/Functions.html#mix-instance_method)函数，是一个不错的方法。
+问题是，这些函数经常并不能实现预期的结果。另一方面，通过混合`白色` 或 `黑色`实现变量或变暗的 [`mix`](http://sass-lang.com/documentation/Sass/Script/Functions.html#mix-instance_method)函数，是一个不错的方法。
 
-和上述两个函数相比，使用`mix`的好处是，当你降低颜色的比例时，它会渐进的接近黑色（或者白色），而 `darken` 和`lighten`立即变换颜色到黑色或白色。 
+和上述两个函数相比，使用`mix`的好处是，当你降低颜色的比例时，它会渐进的接近黑色（或者白色），而 `darken` 和`lighten`立即变换颜色到黑色或白色。
 
 <figure>
   <img src="/assets/images/lighten-darken-mix.png" alt="Illustration of the difference between lighten/darken and mix Sass functions" />
@@ -473,9 +374,7 @@ $main-theme-color: $sass-pink
 
 如果你不想每次都写`mix`函数，你可以创建两个易用的 `tint` 和`shade` ([Compass](http://compass-style.org/reference/compass/helpers/colors/#shade)的一部分)来处理相同的事：
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 /// Slightly lighten a color
 /// @access public
 /// @param {Color} $color - color to tint
@@ -493,10 +392,6 @@ $main-theme-color: $sass-pink
 @function shade($color, $percentage) {
   @return mix($color, black, $percentage);
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 /// Slightly lighten a color
 /// @access public
 /// @param {Color} $color - color to tint
@@ -512,15 +407,10 @@ $main-theme-color: $sass-pink
 /// @return {Color}
 @function shade($color, $percentage)
   @return mix($color, black, $percentage)
-{% endhighlight %}
-  </div>
-</div>
-
+```
 <div class="note">
-  <p>The <a href="http://sass-lang.com/documentation/Sass/Script/Functions.html#scale_color-instance_method"><code>scale-color</code></a> function is designed to scale properties more fluidly by taking into account how high or low they already are. It should provide results that are as nice as <code>mix</code>'s but with a clearer calling convention. The scaling factor isn't exactly the same though.</p>
+  <p><a href="http://sass-lang.com/documentation/Sass/Script/Functions.html#scale_color-instance_method"><code>scale-color</code></a> 函数的设计初衷是为了更流畅地调试属性——以实际的高低为调试基础。它如同<code>mix</code>'s一样好用，并且提供了更清晰地调用约定。比例因子并不完全相同。</p>
 </div>
-
-
 
 ### 扩展阅读
 
@@ -541,9 +431,7 @@ $main-theme-color: $sass-pink
 * 除非为空或者嵌套在另一个列表中，否则始终不要使用括号；
 * 始终不要添加尾部的逗号。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 // 推荐方式
 $font-stack: 'Helvetica', 'Arial', sans-serif;
 
@@ -561,10 +449,6 @@ $font-stack: ('Helvetica', 'Arial', sans-serif);
 
 // 不推荐方式
 $font-stack: ('Helvetica', 'Arial', sans-serif,);
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 // 推荐方式
 $font-stack: 'Helvetica', 'Arial', sans-serif
 
@@ -582,15 +466,11 @@ $font-stack: ('Helvetica', 'Arial', sans-serif)
 
 // 不推荐方式
 $font-stack: ('Helvetica', 'Arial', sans-serif,)
-{% endhighlight %}
-  </div>
-</div>
+```
 
 When adding new items to a list, always use the provided API. Do not attempt to add new items manually.
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 $shadows: 0 42px 13.37px hotpink;
 
 // 推荐方式
@@ -598,10 +478,6 @@ $shadows: append($shadows, $shadow, comma);
 
 // 不推荐方式
 $shadows: $shadows, $shadow;
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 $shadows: 0 42px 13.37px hotpink
 
 // 推荐方式
@@ -609,19 +485,17 @@ $shadows: append($shadows, $shadow, comma)
 
 // 不推荐方式
 $shadows: $shadows, $shadow
-{% endhighlight %}
-  </div>
-</div>
+```
 
 ### 扩展阅读
 
 * [SassyLists](http://sassylists.com)
 
-## 图
+## Maps
 
-从Sass3.3开始，样式表作者可以使用图这种数据结构，Sass团队为图关联了数组、哈希表甚至是Javascript对象。图是一种映射任何类型键值对（可以是任何类型，包括内嵌图，不过不推荐这种内嵌方式）的数据结构。
+从Sass3.3开始，样式表作者可以使用map这种数据结构——Sass团队使map可以映射关联数组、哈希表甚至是Javascript对象。map是一种映射任何类型键值对（可以是任何类型，包括内嵌图，不过不推荐这种内嵌方式）的数据结构。
 
-图的使用应该遵循下述规范：
+map的使用应该遵循下述规范：
 
 * 冒号(`:`)之后添加空格；
 * 左开括号(`(`)要和冒号 (`:`)写在同一行；
@@ -634,9 +508,7 @@ $shadows: $shadows, $shadow
 
 示例:
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 // 推荐方式
 $breakpoints: (
   'small': 767px,
@@ -646,10 +518,6 @@ $breakpoints: (
 
 // 不推荐方式
 $breakpoints: ( small: 767px, medium: 992px, large: 1200px );
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 // 推荐方式
 $breakpoints: ('small': 767px, 'medium': 992px, 'large': 1200px,)
 
@@ -665,19 +533,14 @@ $breakpoints: (
   'medium': 992px,
   'large': 1200px,
 )
-{% endhighlight %}
-  </div>
-</div>
-
+```
 
 
 ###  调试Sass的图
 
 如果你感到困惑并想了解Sass的图到底有怎样的魔力，请不要担心，Sass中始终存在一个自动保存运行过程的机制。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 @mixin debug-map($map) {
   @at-root {
     @debug-map {
@@ -693,10 +556,7 @@ $breakpoints: (
     }
   }
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
+
 =debug-map($map)
   @at-root
     @debug-map
@@ -707,15 +567,11 @@ $breakpoints: (
       __properties__
         @each $key, $value in $map
           #{'(' + type-of($value) + ') ' + $key}: inspect($value)
-{% endhighlight %}
-  </div>
-</div>
+```
 
-如果你想深入了解图的实现机制，可以添加下述函数。该混合宏可以自动显示图的运行机制。
+如果你想深入了解map的实现机制，可以添加下述函数。该混合宏可以自动显示map的运行机制。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 /// Compute the maximum depth of a map
 /// @param {Map} $map
 /// @return {Number} max depth of `$map`
@@ -730,10 +586,6 @@ $breakpoints: (
 
   @return $level;
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 /// Compute the maximum depth of a map
 /// @param {Map} $map
 /// @return {Number} max depth of `$map`
@@ -745,10 +597,7 @@ $breakpoints: (
       $level: max(map-depth($value) + 1, $level)
 
   @return $level;
-{% endhighlight %}
-  </div>
-</div>
-
+```
 
 
 ### 扩展阅读
@@ -764,7 +613,7 @@ $breakpoints: (
 
 ## CSS 规则集
 
-在这里，极有可能颠覆每个人对书写CSS规则集的认知（根据众多规范整理而成，包括CSS Guidelines](http://cssguidelin.es/#anatomy-of-a-ruleset)）：
+在这里，极有可能颠覆每个人对书写CSS规则集的认知（根据众多规范整理而成，包括[CSS Guidelines](http://cssguidelin.es/#anatomy-of-a-ruleset)）：
 
 * 相关联的选择器写在同一行；不相关联选择器分行书写；
 * 最后一个选择器和左开大括号(`{`)中间书写一个空格；
@@ -775,9 +624,7 @@ $breakpoints: (
 
 示例:
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 // 推荐方式
 .foo, .foo-bar,
 .baz {
@@ -792,10 +639,6 @@ $breakpoints: (
     display: block;
     overflow: hidden;
     margin: 0 auto }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 // 推荐方式
 .foo, .foo-bar,
 .baz
@@ -809,9 +652,7 @@ $breakpoints: (
     display: block
     overflow: hidden
     margin: 0 auto
-{% endhighlight %}
-  </div>
-</div>
+```
 
 添加与CSS相关的规范时，我们需要注意：
 
@@ -823,9 +664,7 @@ $breakpoints: (
 
 示例:
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 .foo, .foo-bar,
 .baz {
   $length: 42em;
@@ -844,10 +683,6 @@ $breakpoints: (
     overflow: visible;
   }
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 .foo, .foo-bar,
 .baz
   $length: 42em
@@ -863,9 +698,7 @@ $breakpoints: (
 
   +respond-to('small')
     overflow: visible
-{% endhighlight %}
-  </div>
-</div>
+```
 
 ### 扩展阅读
 
@@ -873,18 +706,14 @@ $breakpoints: (
 
 ## 声明顺序
 
-I cannot think of many topics where opinions are as divided as they are regarding declaration sorting in CSS. Concretely, there are two factions here:
-
 难以想象竟有这么多关于划分CSS声明顺序的讨论。具体而言，有如下两派：
 
 * 坚持以字母顺序排列；
 * 以类型（position, display, colors, font, miscellaneous...）顺序排列；
 
-这两种方式各有利弊。一方面，字母排序方式通俗易懂（至少对于语言中使用拉丁字母的），所以排序的过程完全没有争议。但是，这种排序的结果却十分奇怪，如`bottom` 和 `top`竟然彼此不相邻。为什么animations属性出现在display属性之前？字母排序方式有太多诸如此来的怪相了。
+这两种方式各有利弊。一方面，字母排序方式通俗易懂（至少对于语言中使用拉丁字母的人来说），所以排序的过程完全没有争议。但是，这种排序的结果却十分奇怪，如`bottom` 和 `top`竟然彼此不相邻。为什么animations属性出现在display属性之前？字母排序方式有太多诸如此类的怪相了。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 .foo {
   background: black;
   bottom: 0;
@@ -897,10 +726,6 @@ I cannot think of many topics where opinions are as divided as they are regardin
   right: 0;
   width: 100px;
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 .foo
   background: black
   bottom: 0
@@ -912,15 +737,11 @@ I cannot think of many topics where opinions are as divided as they are regardin
   position: absolute
   right: 0
   width: 100px
-{% endhighlight %}
-  </div>
-</div>
+```
 
-另一方面，按照类型排序则让属性显得更具有意义。每个和字体相关的属性被声明在一起，`top` 和 `bottom`也结合在一起，最终审阅CSS规则集感觉就像是在读故事。除非你坚持诸如 [Idiomatic CSS](https://github.com/necolas/idiomatic-css)的规定，类型声明顺序可以有更丰富充实的表现。`white-space`应该放在哪里：font还是dispaly? `overflow`应该归属何处？如何进行组内排序（如果是字母排序，这岂不成了个笑话）？
+另一方面，按照类型排序则让属性显得更具有意义。每个和字体相关的属性被声明在一起，`top` 和 `bottom`也结合在一起，最终审阅CSS规则集感觉就像是在读故事。除非你坚持诸如 [Idiomatic CSS](https://github.com/necolas/idiomatic-css)的规定，不然类型声明顺序可以有更丰富充实的表现。`white-space`应该放在哪里：font还是dispaly? `overflow`应该归属何处？如何进行组内排序（如果是字母排序，这岂不成了个笑话）？
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 .foo {
   height: 100px;
   width: 100px;
@@ -933,10 +754,6 @@ I cannot think of many topics where opinions are as divided as they are regardin
   font-weight: bold;
   font-size: 1.5em;
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 .foo
   height: 100px
   width: 100px
@@ -948,15 +765,10 @@ I cannot think of many topics where opinions are as divided as they are regardin
   color: white
   font-weight: bold
   font-size: 1.5em
-{% endhighlight %}
-  </div>
-</div>
-
+```
 此外也有其他类型排序的分支，比如[Concentric CSS](https://github.com/brandon-rhodes/Concentric-CSS)，他看起来相当流行。Concentric CSS的基础是依赖盒模型定义顺序：由外而内。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 .foo {
   width: 100px;
   height: 100px;
@@ -969,10 +781,6 @@ I cannot think of many topics where opinions are as divided as they are regardin
   font-weight: bold;
   font-size: 1.5em;
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 .foo
   width: 100px
   height: 100px
@@ -984,11 +792,9 @@ I cannot think of many topics where opinions are as divided as they are regardin
   color: white
   font-weight: bold
   font-size: 1.5em
-{% endhighlight %}
-  </div>
-</div>
+```
 
-我必须说我不能对此下任何判定。一份[recent poll on CSS-Tricks](http://css-tricks.com/poll-results-how-do-you-order-your-css-properties/)确认，超过45%的开发者使用类型顺序声明，而只有14%使用字母顺序。此外还有39%的开发者随意而为，这其中就包括我。 
+我必须说我不能对此下任何判定。一份[recent poll on CSS-Tricks](http://css-tricks.com/poll-results-how-do-you-order-your-css-properties/)确认，超过45%的开发者使用类型顺序声明，而只有14%使用字母顺序。此外还有39%的开发者随意而为，这其中就包括我。
 
 <figure>
   <img src="/assets/images/css_order_chart.png" alt="" />
@@ -1016,9 +822,7 @@ I cannot think of many topics where opinions are as divided as they are regardin
 
 Sass中一个正在被众多开发者滥用的功能，就是*选择器嵌套*。选择器嵌套为样式表作者提供了一个通过局部选择器的相互嵌套实现全局选择的方法。比如下述Sass选择器的嵌套：
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 .foo {
   .bar {
     &:hover {
@@ -1026,64 +830,41 @@ Sass中一个正在被众多开发者滥用的功能，就是*选择器嵌套*�
     }
   }
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 .foo
   .bar
     &:hover
       color: red
-{% endhighlight %}
-  </div>
-</div>
-
+```
 生成的CSS:
 
-{% highlight css %}
+```
 .foo .bar:hover {
   color: red;
 }
-{% endhighlight %}
+```
 
 从Sass3.3开始，可以在同一行中使用最近选择器引用(`&`)来实现高级选择器，比如：
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 .foo {
   &-bar {
     color: red;
   }
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 .foo
   &-bar
     color: red
-{% endhighlight %}
-  </div>
-</div>
+```
 
 ... will generate this CSS:
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 .foo-bar {
   color: red;
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 .foo-bar
   color: red
-{% endhighlight %}
-  </div>
-</div>
+```
 
 这种方式通常被用来配合[BEM naming conventions](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/)基于原生选择器（比如`.block`）生成`.block__element` and `.block--modifier`选择器。
 
@@ -1097,9 +878,7 @@ Sass中一个正在被众多开发者滥用的功能，就是*选择器嵌套*�
 
 为了防止这种情况，我们应该**避免在伪类和伪元素外使用选择器嵌套**。这是唯一允许和建议使用的选择器嵌套方式。
 
-<div class="code-block">
-  <div class="code-block__wrapper" data-syntax="scss">
-{% highlight scss %}
+```
 .foo {
   color: red;
 
@@ -1111,10 +890,6 @@ Sass中一个正在被众多开发者滥用的功能，就是*选择器嵌套*�
     content: 'pseudo-element';
   }
 }
-{% endhighlight %}
-  </div>
-  <div class="code-block__wrapper" data-syntax="sass">
-{% highlight sass %}
 .foo
   color: red
 
@@ -1123,9 +898,7 @@ Sass中一个正在被众多开发者滥用的功能，就是*选择器嵌套*�
 
   &::before
     content: 'pseudo-element'
-{% endhighlight %}
-  </div>
-</div>
+```
 
 使用选择器嵌套选择伪类和伪元素不仅使有道理的（因为它的处理功能与选择器紧密相关），而且有助于保持总体的一致性。
 
