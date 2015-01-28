@@ -369,7 +369,7 @@ URL最好也用引号包裹起来，原因和上面所描述一样：
 
 和上述两个函数相比，使用`mix`的好处是，当你降低颜色的比例时，它会渐进的接近黑色（或者白色），而 `darken` 和`lighten`立即变换颜色到黑色或白色。
 
-![变量和变暗颜色](/sites/default/files/blogs/2015/1501/lighten-darken-mix.png "变量和变暗颜色")
+![变量和变暗颜色](http://www.w3cplus.com/sites/default/files/blogs/2015/1501/lighten-darken-mix.png "变量和变暗颜色")
 
 [KatieK](http://codepen.io/KatieK2/pen/tejhz/)通过Illustration绘制了`lighten`/`darken`和`mix`之间的差别
 
@@ -651,7 +651,7 @@ $breakpoints: ( small: 767px, medium: 992px, large: 1200px );
 
 我必须说我不能对此下任何判定。一份[CSS-Tricks做的统计报告](http://css-tricks.com/poll-results-how-do-you-order-your-css-properties/)确认，超过45%的开发者使用类型顺序声明，而只有14%使用字母顺序。此外还有39%的开发者随意而为，这其中就包括我。
 
-![CSS-Tricks做的统计报告](/sites/default/files/blogs/2015/1501/css_order_chart.png "CSS-Tricks做的统计报告")
+![CSS-Tricks做的统计报告](http://www.w3cplus.com/sites/default/files/blogs/2015/1501/css_order_chart.png "CSS-Tricks做的统计报告")
 
 因此，我不会在此强加规范选择怎样的声明顺序。只要你长久的在自己的样式表中保持一致的风格，那么选择喜欢的声明顺序就可以了。
 
