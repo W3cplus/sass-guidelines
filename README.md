@@ -291,7 +291,7 @@ URL最好也用引号包裹起来，原因和上面所描述一样：
 
 ####幻数
 
-"幻数"，是<a href="http://en.wikipedia.org/wiki/Magic_number_(programming)#Unnamed_numerical_constants" >古老的学样编程</a>给*未命名数值常数*的命名。基本上，它们只是*能工作*™但没有任何逻辑思维的随机数。
+"幻数"，是<a href="http://en.wikipedia.org/wiki/Magic_number_(programming)#Unnamed_numerical_constants" >古老的学校编程</a>给*未命名数值常数*的命名。基本上，它们只是*能工作*™但没有任何逻辑思维的随机数。
 
 相信不用多说你也会理解，**幻数是一场瘟疫，应不惜一切代价以避免**。当你对数值的解析方式无法找到一个合理解释时，你可以对此提交一个内容宽泛的评论，包括你是怎样遇见这个问题以及你认为它应该怎样工作。承认自己不清楚一些机制的解析方式，远比让以后的开发者从零开始弄清它们更有帮助。
 
