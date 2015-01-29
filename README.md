@@ -771,3 +771,162 @@ Sass中一个正在被众多开发者滥用的功能，就是**选择器嵌套**
 - [Beware of Selector Nesting](http://www.sitepoint.com/beware-selector-nesting-sass/)
 - [The Inception Rule](http://thesassway.com/beginner/the-inception-rule)
 - [Avoid nested selectors for more modular CSS](http://thesassway.com/intermediate/avoid-nested-selectors-for-more-modular-css)
+
+##命名约定
+
+在本节，我们不会讨论适用于大规模和可维护的最佳CSS命名方案，因为这不仅仅超过了个人的能力范围，也不是一个Sass样式指南可以解决的问题。我个人推荐遵从[CSS Guidelines](http://cssguidelin.es/#naming-conventions)的建议。
+
+良好的命名对保持整体代码的一致性和可读性非常重要，在Sass中可以命名的地方如下：
+
+- 变量；
+- 函数；
+- 混合宏。
+
+由于Sass占位符遵循和类名相同的命名模式，因此被视为常规的CSS选择器，也就在这个列表中故意忽略掉了。
+
+就变量、函数和混合宏的命名而言，我们坚持一些很 *CSS-y*的风格：**小写连字符分隔**，有意义的命名。
+
+    $vertical-rhythm-baseline: 1.5rem;
+    @mixin size($width, $height: $width) {
+      // ...
+    }
+    @function opposite-direction($direction) {
+      // ...
+    }
+
+####扩展阅读
+
+- [CSS Guidelines' Naming Conventions](http://cssguidelin.es/#naming-conventions)
+
+##常量
+
+如果你恰巧是一个框架开发者或某个库的维护者，你会发现自己正在使用的变量并不需要在所有情况下都进行更新：此时是多么类似一个常量。不幸的是（或者幸运的是？），Sass不提供任何方式定义这样的实体，所以我们要坚持严格的命名约定来阐述我们的想法。
+
+对于众多编程语言，我建议使用全大写方式书写常量。这不仅是一个由来已久的编程习惯，而且可以很好的与小写连字符变量加以区别。
+
+    // 推荐方式
+    $CSS_POSITIONS: top, right, bottom, left, center;
+    // 不推荐方式
+    $css-positions: top, right, bottom, left, center;
+
+####扩展阅读
+
+- [Dealing With Constants in Sass](http://www.sitepoint.com/dealing-constants-sass/)
+
+##命名空间
+
+如果你打算分发你的Sass代码，比如一个库、框架、栅格系统或者其他的什么，为了防止与其他人的代码发生冲突，你就可能会考虑使用命名空间包裹你所有的变量、函数、混合宏和占位符。
+
+举例来说，如果你参加了一个名为*Sassy Unicorn*的项目——这意味着全球的开发者都可能会使用它（谁都有可能，对吧？），你可能会考虑使用`su-`作为一个命名空间。这确实非常独特，既不会引发命名冲突，又足够短小而没有书写困难。
+
+    $su-configuration: ( ... );
+    @function su-rainbow($unicorn) {
+      // ...
+    }
+
+**注：**需要注意的是，自动命名空间功能绝对是即将到来的Sass4.0中重构的`@import`的一个设计目标。随着即将取得结果，将会越来越少的需要手动命名，最终，手动命名库名实际上会越来越难用。
+
+####扩展阅读
+
+- [Please Respect the Global CSS Namespace](http://blog.kaelig.fr/post/44554267597/please-respect-the-global-css-namespace)
+
+##注释
+
+CSS是一个棘手的语言，充满了骇客行为和古怪的事情。因此，应该大量注释，特别是如果有人打算六个月或一年后要继续阅读和更新这些代码。不要让任何人处于如此境地：**这不是我写的，上帝，为什么会这样**。
+
+CSS的实现很简单，但我们需要为此付出巨大的注释量。解释如下：
+
+- 一个文件的结构或者作用；
+- 规则集的目标；
+- 使用幻数背后的目的；
+- CSS声明的原因；
+- CSS声明的顺序；
+- 方法执行背后的逻辑思维。
+
+在这里，我可能还遗漏了其他各种各样的缘由。在代码完成之时立即注释，往往只需花费一点时间；而过一阵时间再来为一小段代码注释，则是完全不现实和令人恼怒的。
+
+###写注释
+
+理想上，**任何**CSS规则集之前都应该使用C风格注释来解释CSS块的核心。这个注释也要记录对规则集特定部分编号的解释。比如：
+
+    /**
+     * Helper class to truncate and add ellipsis to a string too long for it to fit
+     * on a single line.
+     * 1. Prevent content from wrapping, forcing it on a single line.
+     * 2. Add ellipsis at the end of the line.
+     */
+    .ellipsis {
+      white-space: nowrap; /* 1 */
+      text-overflow: ellipsis; /* 2 */
+      overflow: hidden;
+    }
+
+基本上，任何不能明显看出意义的地方都应该注释，但不要随处注释。记住不要**注释太多**，掌握尺度让每一处注释都有意义。
+
+当注释Sass的一个特定部分时，应该使用Sass单行注释而不是C风格的注释块。这么做将不会输出注释，即使是在开发时的扩展模式。
+
+    // Add current module to the list of imported modules.
+    // `!global` flag is required so it actually updates the global variable.
+    $imported-modules: append($imported-modules, $module) !global;
+
+###扩展阅读
+
+- [CSS Guidelines' Commenting section](http://cssguidelin.es/#commenting)
+
+###文档
+
+每一个旨在代码库中复用的变量、函数、混合宏和占位符，都应该使用[SassDoc](http://sassdoc.com)记录下来作为全部API的一部分。
+
+    /// Vertical rhythm baseline used all over the code base.
+    /// @type Length
+    $vertical-rhythm-baseline: 1.5rem;
+
+**注：**需要三个斜杠(`/`)。
+
+SassDoc主要有两个作用：
+
+- 作为公有或私有API的一部分，在所有的地方使用一个注释系统强制标准化注释。
+- 通过使用任意的SassDoc终端(CLI tool, Grunt, Gulp, Broccoli, Node...)，能够生成API文档的HTML版本。
+
+![SassDoc](http://www.w3cplus.com/sites/default/files/blogs/2015/1501/preview-image.png "SassDoc")
+
+这里有一个深入整合SassDoc生成文档的例子：
+
+    /// Mixin helping defining both `width` and `height` simultaneously.
+    ///
+    /// @author Hugo Giraudel
+    ///
+    /// @access public
+    ///
+    /// @param {Length} $width - Element's `width`
+    /// @param {Length} $height ($width) - Element's `height`
+    ///
+    /// @example scss - Usage
+    ///   .foo {
+    ///     @include size(10em);
+    ///   }
+    ///
+    ///   .bar {
+    ///     @include size(100%, 10em);
+    ///   }
+    ///
+    /// @example css - CSS output
+    ///   .foo {
+    ///     width: 10em;
+    ///     height: 10em;
+    ///   }
+    ///
+    ///   .bar {
+    ///     width: 100%;
+    ///     height: 10em;
+    ///   }
+    @mixin size($width, $height: $width) {
+      width: $width;
+      height: $height;
+    }
+
+####扩展阅读
+
+- [SassDoc](http://sassdoc.com)
+- [SassDoc: a Documentation Tool for Sass](http://www.sitepoint.com/sassdoc-documentation-tool-sass/)
+- [New Features and New Look for SassDoc](http://webdesign.tutsplus.com/articles/new-features-and-a-new-look-for-sassdoc--cms-21914)
