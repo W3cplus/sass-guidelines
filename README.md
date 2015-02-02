@@ -1334,3 +1334,320 @@ SassDoc主要有两个作用：
 - [Sass and Media Queries](http://sasscast.tumblr.com/post/38673939456/sass-and-media-queries)
 - [Inline or Combined Media queries? Fight!](http://benfrain.com/inline-or-combined-media-queries-in-sass-fight/)
 - [Sass::MediaQueryCombiner](https://github.com/aaronjensen/sass-media_query_combiner)
+
+##变量
+
+变量是任何编程语言的精髓。变量让值得以重用，避免了一遍遍地复制副本。最重要的是，使用变量让更新一个值变得很方便。不用查找、替换，更不用手动检索。
+
+然而CSS是一个将所有鸡蛋装在一个大篮子中的语言，不同于其他语言，这里没有真正的作用域。因此，我们需要十分重视由于添加变量而引起的冲突。
+
+我的建议只适用于创建变量并感觉确有必要的情况下。不要为了某些骇客行为而声明新变量，这丝毫没有作用。只有满足所有下述标准时方可创建新变量：
+
+- 该值至少重复出现了两次；
+- 该值至少可能会被更新一次；
+- 该值所有的表现都与变量有关（非巧合）。
+
+基本上，没有理由声明一个永远不需要更新或者只在单一地方使用变量。
+
+###作用域
+
+Sass中变量的作用域在过去几年已经发生了一些改变。直到最近，规则集和其他范围内声明变量的作用域才默认为本地。如果已经存在同名的全局变量，则局部变量覆盖全局变量。从3.4版本开始，Sass已经可以正确处理作用域的概念，并通过创建一个新的局部变量来代替。
+
+本部分讨论下**全局变量的影子**。当在局部范围内（选择器内、函数内、混合宏内……）声明一个已经存在于全局范围内的变量时，局部变量就成为了全局变量的*影子*。基本上，局部变量只会在局部范围内覆盖全局变量。
+
+以下代码片可以解析**变量影子**的概念。
+
+    // Initialize a global variable at root level.
+    // In this case, the `!global` flag is optional.
+    $variable: 'initial value' !global;
+    // Create a mixin that overrides that global variable.
+    @mixin global-variable-overriding {
+      $variable: 'mixin value' !global;
+    }
+    .local-scope::before {
+      // Create a local variable that shadows the global one.
+      $variable: 'local value';
+      // Include the mixin: it overrides the global variable.
+      @include global-variable-overriding;
+      // Print the variable's value.
+      // It is the **local** one, since it shadows the global one.
+      content: $variable;
+    }
+    // Print the variable in another selector that does no shadowing.
+    // It is the **global** one, as expected.
+    .other-local-scope::before {
+      content: $variable;
+    }
+
+###!default标志
+
+如果创建一个库、框架、栅格系统甚至任何的Sass片段，是为了分发经验或者被其他开发者使用，那么与之配置的所有变量都应该使用`!default`标志来定义，方便其他开发者重写变量。
+
+    $baseline: 1em !default;
+
+多亏如此，开发者才能在引入你的库之前定义自用的`$baseline`，引入后又不必担心自己的值被重定义了。
+
+    // Developer's own variable
+    $baseline: 2em;
+    // Your library declaring `$baseline`
+    @import 'your-library';
+    // $baseline == 2em;
+
+###!global标志
+
+`!global`标志应该只在局部范围的全局变量被覆盖时使用。定义根级别的变量时，`!global`标志应该省略。
+
+    // 推荐方式
+    $baseline: 2em;
+    // 不推荐方式
+    $baseline: 2em !global;
+
+###多变量或Maps
+
+使用maps比使用多个不同的变量有明显优势。最重要的优势就是map的遍历功能，这在多个不同变量中是不可能实现的。
+
+另一个支持使用map的原因，是它可以创建`map-get()`函数以提供友好API的功能。比如，思考一下下述Sass代码：
+
+    /// Z-indexes map, gathering all Z layers of the application
+    /// @access private
+    /// @type Map
+    /// @prop {String} key - Layer's name
+    /// @prop {Number} value - Z value mapped to the key
+    $z-indexes: (
+      'modal': 5000,
+      'dropdown': 4000,
+      'default': 1,
+      'below': -1,
+    );
+
+    /// Get a z-index value from a layer name
+    /// @access public
+    /// @param {String} $layer - Layer's name
+    /// @return {Number}
+    /// @require $z-indexes
+    @function z($layer) {
+      @return map-get($z-indexes, $layer);
+    }
+
+##扩展
+
+`@extend`指令是几年前使Sass风靡一时的重要特性之一。该指令作为一个警示，告知Sass对元素A的样式化正好存在与选择器B共通的地方。不用多说，这是书写模块化CSS的好助手。
+
+然而我感觉必须提醒你谨慎使用这个特性。正因灵活多变，所以`@extend`还是一个棘手的概念，某些时候可能弊大于利，特别是被滥用时。当扩展一个选择器时，除非你对整个代码库有深入的了解，不然肯定没法回答诸如下面的问题：
+
+- 当前选择器要追加到哪里？
+- 我是否会碰上意料之外的副作用？
+- 这条简单的扩展将会产生多大的CSS？
+
+如你所知，结果的可能即包括没有任何影响，也包括灾难性副作用。因此，我的第一建议是完全避免使用`@extend`指令。这听起来有些残酷，但最终会拯救你于水火之中。
+
+俗话说的好：
+
+>永远不要说不可能。——Apparently, [not Beyonce](https://github.com/HugoGiraudel/sass-guidelines/issues/31#issuecomment-69112419)。
+
+扩展选择器在有些情境下是有用和值得的。始终牢记这些规则，那样就不会是自己陷入困境：
+
+- 从单一模块扩展，而不是多个不同的模块；
+- 只使用占位符扩展，而不使用实际的选择器；
+- 确保用来扩展的占位符是样式表中尽可能小的。
+
+如果你要使用扩展，我想提醒你它也不能与`@media`块元素融洽相处。如你所知，Sass不能在一个媒体查询中扩展外部的选择器。当你这么做的时候，编译器轻易就会崩溃，并提醒你不能这么干。这不是好消息，特别是几乎所有人都知道媒体查询功能。
+
+    .foo {
+      content: 'foo';
+    }
+    @media print {
+      .bar {
+        // This doesn't work. Worse: it crashes.
+        @extend .foo;
+      }
+    }
+
+> 无法在`@media`内部`@extend`一个外部选择器。只可以使用相同指令`@extend`选择器。
+
+>这就是常说的`@extend`可以通过合并选择器而不是复制属性帮助减小文件大小。这种说法是对的，不过一旦经[Gzip](http://en.wikipedia.org/wiki/Gzip)处理后这点差异完全可以忽略不计。也就是说，如果你无法使用Gzip（或相同工具），在你足够精通的前提下使用`@extend`方式也是不错的。
+
+总而言之，除非在某些特殊情况下，否则我**建议不要使用`@extend`指令**，但我不会禁用它。
+
+####扩展阅读
+
+- [What Nobody Told you About Sass Extend](http://www.sitepoint.com/sass-extend-nobody-told-you/)
+- [Why You Should Avoid Extend](http://www.sitepoint.com/avoid-sass-extend/)
+- [Don't Over Extend Yourself](http://pressupinc.com/blog/2014/11/dont-overextend-yourself-in-sass/)
+- [When to Use Extend; When to Use a Mixin](http://csswizardry.com/2014/11/when-to-use-extend-when-to-use-a-mixin/)
+
+##混合宏
+
+混合宏是整个Sass语言中最常用的功能之一。这是重用和减少重复组件的关键。这么做有很棒的原因：混合宏允许开发者在样式表中定义可复用样式，减少了对非语义类的需求，比如`.float-left`。
+
+它们可以包含所有的CSS规则，并且在Sass文档允许的任何地方都表现良好。它们甚至可以像函数一样接受参数。不用多说，充满了无尽的可能。
+
+不过我有必要提醒你滥用混合宏的破坏力量。再次重申一遍，使用混合宏的关键是**简洁**。建立混入大量逻辑而极具力量的混合宏看上去确实很有诱惑力。这就是所谓的过度开发，大多数开发者常常因此陷入困境。不要过度逻辑化你的代码，尽量保持一切简洁。如果一个混合宏最后超过了20行，那么它应该被分离成更小的块甚至是重建。
+
+###基础
+
+话虽如此，混合宏确实非常有用，你应该学习使用它。经验告诉我们，如果你发现有一组CSS属性经常因同一个原因一起出现（非巧合），那么你就可以使用混合宏来代替。比如[Nicolas Gallagher的清除浮动](http://nicolasgallagher.com/micro-clearfix-hack/)应当放入一个混合宏的实例。
+
+    /// Helper to clear inner floats
+    /// @author Nicolas Gallagher
+    /// @link http://nicolasgallagher.com/micro-clearfix-hack/ Micro Clearfix
+    @mixin clearfix {
+      &::after {
+        content: '';
+        display: table;
+        clear: both;
+      }
+    }
+
+另一个有效的实例是通过在混合宏中绑定`width` 和 `height`属性，可以为元素设置宽高。这样不仅会淡化不同类型代码间的差异，也便于阅读。
+
+    /// Helper to size an element
+    /// @author Hugo Giraudel
+    /// @param {Length} $width
+    /// @param {Length} $height
+    @mixin size($width, $height: $width) {
+      width: $width;
+      height: $height;
+    }
+
+####扩展阅读
+
+- [Sass Mixins to Kickstart your Project](http://www.sitepoint.com/sass-mixins-kickstart-project/)
+- [A Sass Mixin for CSS Triangles](http://www.sitepoint.com/sass-mixin-css-triangles/)
+- [Building a Linear-Gradient Mixin](http://www.sitepoint.com/building-linear-gradient-mixin-sass/)
+
+###参数列表
+
+当混合宏需要处理数量不明的参数时，通常使用`arglist`而不是列表。可以认为`arglist`是Sass中隐藏而未被记录的第八个数据类型，通常当需要任意数量参数的时候，被隐式使用到参数中含有`...`标志的混合宏和函数中。
+
+    @mixin shadows($shadows...) {
+      // type-of($shadows) == 'arglist'
+      // ...
+    }
+
+现在，当要建立一个接收多个参数（默认为3或者更多）的混合宏时，在将它们合并为列表或者map之前，要反复考量这样做是否比一个个的单独存在更易于使用。
+
+Sass的混合宏和函数声明非常智能，你只需给函数/混合宏一个列表或map，它会自动解析为一系列的参数。
+
+    @mixin dummy($a, $b, $c) {
+      // ...
+    }
+    // 推荐方式
+    @include dummy(true, 42, 'kittens');
+    // 不推荐方式
+    $params: true, 42, 'kittens';
+    $value: dummy(nth($params, 1), nth($params, 2), nth($params, 3));
+    // 推荐方式
+    $params: true, 42, 'kittens';
+    @include dummy($params...);
+    // 推荐方式
+    $params: (
+      'c': 'kittens',
+      'a': true,
+      'b': 42
+    );
+    @include dummy($params...);
+
+####扩展阅读
+
+- [Sass Multiple Arguments, Lists or Arglist](http://www.sitepoint.com/sass-multiple-arguments-lists-or-arglist/)
+
+###混合宏和浏览器前缀
+
+通过使用自定义混合宏来处理CSSS中未被支持或部分支持的浏览器前缀，是非常有吸引力的一种做法。但我们不希望这么做。首先，如果你可以使用[Autoprefixer](https://github.com/postcss/autoprefixer)，那就使用它。它会从你的项目中移除Sass代码，会一直更新并一定会进行比你手动添加前缀更棒的处理。
+
+不行的是，Autoprefixer并不是总被支持的。如果你使用[Bourbon](http://bourbon.io/) 或 [Compass](http://compass-style.org/)，你可能就已经知道它们都提供了一个混合宏的集合，用来为你处理浏览器前缀，那就用它们吧。
+
+如果你不能使用Autoprefixe，甚至也不能使用Bourbon和Compass，那么接下来唯一的方式，就是使用自己的混合宏处理带有前缀的CSS属性。但是，请不要为每个属性建立混合宏，更不要无脑输出每个浏览器的前缀（有些根本就不存在）。
+
+    // 不推荐方式
+    @mixin transform($value) {
+      -webkit-transform: $value;
+      -moz-transform: $value;
+      transform: $value;
+    }
+
+比较好的做法是
+
+    /// Mixin helper to output vendor prefixes
+    /// @access public
+    /// @author HugoGiraudel
+    /// @param {String} $property - Unprefixed CSS property
+    /// @param {*} $value - Raw CSS value
+    /// @param {List} $prefixes - List of prefixes to output
+    @mixin prefix($property, $value, $prefixes: ()) {
+      @each $prefix in $prefixes {
+        -#{$prefix}-#{$property}: $value;
+      }
+      #{$property}: $value;
+    }
+
+然后就可以非常简单地使用混合宏了：
+
+    .foo {
+      @include prefix(transform, rotate(90deg), webkit ms);
+    }
+
+请记住，这是一个糟糕的解决方案。例如，他不能处理那些需要复杂的前缀，比如`flexbox`。在这个意义上说，使用Autoprefixer是一个更好地选择。
+
+####扩展阅读
+
+- [Autoprefixer](https://github.com/postcss/autoprefixer)
+- [Building a Linear-Gradient Mixin](http://www.sitepoint.com/building-linear-gradient-mixin-sass/)
+
+##条件语句
+
+你可能早已知晓，Sass通过`@if`和`@else`指令提供了条件语句。除非你的代码中有偏复杂的逻辑，否则没必要在日常开发的样式表中使用条件语句。实际上，条件语句主要适用于库和框架。
+
+无论何时，如果你感觉需要它们，请遵守下述准则：
+
+- 除非必要，不然不需要括号；
+- 务必在左开大括号(`{`)后换行；
+- `@else`语句和它前面的右闭大括号(`}`)写在同一行。
+
+<pre>
+// 推荐方式
+@if $support-legacy {
+  // ...
+} @else {
+  // ...
+}
+
+// 不推荐方式
+@if ($support-legacy == true) {
+  // ...
+}
+@else {
+  // ...
+}
+</pre>
+
+测试一个错误值时，通常使用`not`关键字而不是比较与`false`或`null`等值。
+
+    // 推荐方式
+    @if not index($list, $item) {
+      // ...
+    }
+    // 不推荐方式
+    @if index($list, $item) == null {
+      // ...
+    }
+
+当使用条件语句并在一些条件下有内联函数返回不同结果时，始终要确保最外层函数有一个`@return`语句。
+
+    // 推荐方式
+    @function dummy($condition) {
+      @if $condition {
+        @return true;
+      }
+      @return false;
+    }
+    // 不推荐方式
+    @function dummy($condition) {
+      @if $condition {
+        @return true;
+      } @else {
+        @return false;
+      }
+    }
+
